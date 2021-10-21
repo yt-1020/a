@@ -1,0 +1,56 @@
+
+1.
+package main
+
+import (
+  "os"
+  "fmt"  
+  "strings"  
+)
+
+func main() {	
+	// Set custom env variable
+	os.Setenv("PATH", "=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=e6a0557d8a1b")
+	
+	// fetcha all env variables
+	for _, element := range os.Environ() {
+        variable := strings.Split(element, "=")
+        fmt.Println(variable[0],"=>",variable[1])		
+    }
+	
+	// fetch specific env variables
+	fmt.Println("PATH=", os.Getenv("PATH"))
+}
+
+2.
+package main
+
+import (
+    "fmt"
+    "log"
+    "net"
+)
+
+func localAddresses() {
+    ifaces, err := net.Interfaces()
+    if err != nil {
+        log.Print(fmt.Errorf("localAddresses: %v\n", err.Error()))
+        return
+    }
+    for _, i := range ifaces {
+        addrs, err := i.Addrs()
+        if err != nil {
+            log.Print(fmt.Errorf("localAddresses: %v\n", err.Error()))
+            continue
+        }
+        for _, a := range addrs {
+            log.Printf("%v %v\n", i.Name, a)
+        }
+    }
+}
+
+func main() {
+    localAddresses()
+}
+
